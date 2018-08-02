@@ -36,13 +36,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,ButtonService.class);
+                intent.setAction("AIDL.buttonserver");
                 if (isBind){
                     ButtonInfoEntry buttonInfoEntry = new ButtonInfoEntry();
                     buttonInfoEntry.setButtonName(etName.getText().toString());
                     buttonInfoEntry.setButtonBackground(Integer.parseInt(etBack.getText().toString()));
                     try {
-                        mIButtonControlAIDL.addButtonInfoList(buttonInfoEntry);
                         Log.e("buttonInfoEntry===",buttonInfoEntry.toString());
+                        mIButtonControlAIDL.addButtonInfoList(buttonInfoEntry);
 
                     } catch (RemoteException e) {
                         e.printStackTrace();
@@ -58,13 +59,21 @@ public class MainActivity extends AppCompatActivity {
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mIButtonControlAIDL = (IButtonControlAIDL) service;
+            Log.e("连接  ComponentName=====",name.getClassName());
+            mIButtonControlAIDL = IButtonControlAIDL.Stub.asInterface(service);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            Log.e("断开  ComponentName=====",name.getClassName());
             mIButtonControlAIDL = null;
             isBind = false;
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(mServiceConnection);
+    }
 }

@@ -32,7 +32,7 @@ public class ButtonService extends Service {
 
         @Override
         public List<ButtonInfoEntry> getButtonInfoList() throws RemoteException {
-            Log.e(TAG, "getButtonInfoList: buttonInfo.toString()==="+mButtonInfoEntryList.get(0).toString());
+            Log.e(TAG, "getButtonInfoList: buttonInfo.toString()==="+mButtonInfoEntryList.get(mButtonInfoEntryList.size()-1).toString());
 
             return mButtonInfoEntryList;
         }

@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     IButtonControlAIDL mIButtonControlAIDL;
     Button btnCommit;
+    Button btnStop;
     EditText etName;
     EditText etBack;
     boolean isBind;
@@ -28,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnCommit = findViewById(R.id.button);
+        btnCommit = findViewById(R.id.btn_start);
+        btnStop = findViewById(R.id.btn_stop);
         etName = findViewById(R.id.et_name);
         etBack = findViewById(R.id.et_back);
 
@@ -51,6 +53,16 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     isBind = bindService(intent,mServiceConnection,BIND_AUTO_CREATE);
+                }
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isBind){
+                    unbindService(mServiceConnection);
+                    isBind = false;
                 }
             }
         });

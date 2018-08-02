@@ -16,7 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".ButtonService"/>
+        <service android:name=".ButtonService"
+            android:enabled="true"
+            android:exported="true"
+             >
+            <intent-filter>
+                <action android:name="AIDL.buttonserver"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

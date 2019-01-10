@@ -24,6 +24,15 @@ public class MainActivity extends AppCompatActivity {
     EditText etBack;
     boolean isBind;
 
+    //死亡代理 当连接断开之后打印日志
+    private IBinder.DeathRecipient  deathRecipient = new IBinder.DeathRecipient() {
+        @Override
+        public void binderDied() {
+            Log.e("deathRecipient","连接断开");
+            mIButtonControlAIDL.asBinder().unlinkToDeath(this,0);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("buttonInfoEntry===",buttonInfoEntry.toString());
                         mIButtonControlAIDL.addButtonInfoList(buttonInfoEntry);
 
+//                            //判断是否存活
+//                            mIButtonControlAIDL.asBinder().isBinderAlive();
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
@@ -73,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             Log.e("连接  ComponentName=====",name.getClassName());
             mIButtonControlAIDL = IButtonControlAIDL.Stub.asInterface(service);
+            try {
+                mIButtonControlAIDL.asBinder().linkToDeath(deathRecipient,0);
+            } catch (RemoteException e) {
+
+            }
         }
 
         @Override

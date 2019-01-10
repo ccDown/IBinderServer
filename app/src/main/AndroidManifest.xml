@@ -9,19 +9,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".BinderPoolActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".ButtonService"
-            android:enabled="true"
+        <!--<service android:name=".ButtonService"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true"-->
+             <!--&gt;-->
+            <!--<intent-filter>-->
+                <!--<action android:name="AIDL.buttonserver"/>-->
+            <!--</intent-filter>-->
+        <!--</service>-->
+
+        <service android:name=".server.BinderPoolService"
+            android:enabled ="true"
             android:exported="true"
-             >
+            android:process=".remote"
+            >
             <intent-filter>
-                <action android:name="AIDL.buttonserver"/>
+                <action android:name = "binderpool"/>
             </intent-filter>
         </service>
     </application>
